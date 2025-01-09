@@ -1,0 +1,40 @@
+
+import TestLibrary
+
+func OnInit() {
+    // Changes to Go maps from inside Risor scripts aren't saved back to the original map (as of 1/9/25),
+    // so we use an interim global object to store values.
+    Data.SetAll({
+        "pos": [Lib.GameWidth() / 2, Lib.GameHeight() / 2],
+        "dir": [rand.float() - 0.5, rand.float() - 0.5]
+    })
+
+}
+
+func OnUpdate() {
+
+    pos := Data.Get("pos")
+    pos[0] = pos[0] + Data.Get("dir")[0]
+    pos[1] = pos[1] + Data.Get("dir")[1]
+
+    pos = TestLibrary.Shake(pos, 4)
+
+    Data.Set("pos", pos)
+
+    if pos[0] < -16 || pos[0] >= Lib.GameWidth() || pos[1] < -16 || pos[1] >= Lib.GameHeight() {
+        Self.Remove()
+    }
+
+}
+
+func OnDraw() {
+
+    // Technically, the screen should be passed to the OnDraw() function,
+    // but I was too lazy to make Screen "obey" object.Object.
+    screen := Lib.Screen()
+
+    pos := Data.Get("pos")
+
+    screen.Draw(Lib.LoadPNG("assets/smile.png"), pos[0], pos[1])
+
+}

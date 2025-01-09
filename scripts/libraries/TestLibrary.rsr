@@ -1,0 +1,8 @@
+import rand
+
+func Shake(position, shakeDist) {
+    p := position
+    p[0] = p[0] + (rand.float() * shakeDist) - (shakeDist / 2)
+    p[1] = p[1] + (rand.float() * shakeDist) - (shakeDist / 2)
+    return p
+}
